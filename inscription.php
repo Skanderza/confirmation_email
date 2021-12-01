@@ -1,4 +1,5 @@
 <?php
+ require "PHPMailer/PHPMailerAutoload.php";
 session_start(); 
 //Connection BDD
 $bdd =new PDO('mysql:host=localhost;dbname=confirmation_email', "root", "root");
@@ -17,7 +18,58 @@ if(isset($_Post['valider'])){
         if($recupUser->rowCount()>0){
             $userInfos = $recupUser->fetch();
             $_session['id'] = $userInfos['id'];
+           
+
+function smtpmailer($to, $from, $from_name, $subject, $body)
+    {
+        
+        
+
+        $mail = new PHPMailer();
+        $mail->IsSMTP();
+        $mail->SMTPAuth = true; 
+ 
+        $mail->SMTPSecure = 'ssl'; //pour gmail
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = 465;  //pour gmail 
+        $mail->Username = 'zahiskander.test@gmail.com';
+        $mail->Password = 'Skan1919test'; 
+        
+   //   $path = 'reseller.pdf';
+   //   $mail->AddAttachment($path);
+   
+        $mail->IsHTML(true);
+        $mail->From="zahiskander.test@gmail.com";
+        $mail->FromName=$from_name;
+        $mail->Sender=$from;
+        $mail->AddReplyTo($from, $from_name);
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+        $mail->AddAddress($to);
+
+        if(!$mail->Send())
+        {
+            $error ="Please try Later, Error Occured while Processing...";
+            return $error; 
         }
+        else 
+        {
+            $error = "Thanks You !! Your email is sent.";  
+            return $error;
+        }
+         
+    }
+    
+    $to   = $email;
+    $from = 'zahiskander.test@gmail.com';
+    $name = 'Skander';
+    $subj = 'Email de confirmation de compte';
+    $msg = 'http://localhost:8888/Confirmation_mail/verif.php?id='.$_SESSION['id'].'&cle='.$cle;
+    
+    $error=smtpmailer($to,$from, $name ,$subj, $msg);
+        }
+
+        
 
 
     }else{
