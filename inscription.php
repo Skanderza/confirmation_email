@@ -20,6 +20,7 @@ if(isset($_POST['valider'])){
         if($recupUser->rowCount()>0){
             $userInfos = $recupUser->fetch();
             $_SESSION['id'] = $userInfos['id'];
+            $id = $_SESSION['id'];
       
             function smtpmailer($to, $from, $from_name, $subject, $body)
     {
@@ -60,8 +61,16 @@ if(isset($_POST['valider'])){
     $from = 'zahiskander.test@gmail.com';
     $name = 'Skander';
     $subj = 'Email de confirmation de compte';
-    $msg = 'http://localhost:8888/Confirmation_mail/verif.php?id='.$_SESSION['id'].'&cle='.$cle;
     
+        $msg = '
+        <html>
+        <head>Confirmation du compte</head>
+        <body>
+        <p>Veuillez cliquez sur le lien pour confirmer votre compte<p>
+        <a href="http://localhost:8888/Confirmation_mail/verif.php?id='.$id.'&cle='.$cle.'">ICI<a/>
+        </body></html>
+        ';
+
     $error=smtpmailer($to,$from, $name ,$subj, $msg);
 
         }
