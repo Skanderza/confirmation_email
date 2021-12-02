@@ -69,7 +69,7 @@ if(isset($_POST['valider'])){
         <p>Veuillez cliquez sur le lien pour confirmer votre compte<p>
         <a href="http://localhost:8888/Confirmation_mail/verif.php?id='.$id.'&cle='.$cle.'">ICI<a/>
         </body></html>
-        ';
+        http://localhost:8888/Confirmation_mail/verif.php?id='.$_SESSION['id'].'&cle='.$cle;
 
     $error=smtpmailer($to,$from, $name ,$subj, $msg);
 
@@ -94,6 +94,7 @@ if(isset($_POST['valider'])){
 </head>
 <body>
     <div class="container">
+        <h1>Inscription</h1>
     <form method="POST" action="">
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label" name='email'>Email</label>

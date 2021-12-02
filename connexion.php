@@ -1,3 +1,33 @@
+<?php
+
+session_start(); 
+//Connection BDD
+$bdd =new PDO('mysql:host=localhost;dbname=confirmation_email', "root", "root");
+
+if(isset($_POST['valider'])){
+  if(!empty($_POST['email'])){
+    $recupUser = $bdd->prepare('SELECT * FROM users WHERE email = ?');
+    $recupUser->execute(array($_POST['email']));
+    if($recupUser->rowCount()>0){
+      $userInfo = $recupUser->fetch();
+      if($userInfo['confirme'] == 1){
+        var_dump($userInfo['confirme']);
+        header('Location: verif.php?id='.$userInfo['id'].'&cle='.$userInfo['cle']);
+      }else{
+        echo 'veuillez confirmer votre mail';
+      }
+    }else{
+      echo "L'utilisateur n'existe pas";
+    }
+  }else{
+    echo 'Veuillez mettre votre email';
+  }
+}
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,18 +38,19 @@
     <title>Connexion</title>
 </head>
 <body>
-<form>
+  <h1>Connection</h1>
+  <div class="container">
+  <form method="POST" action="">
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
     
   </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
-  </div>
+  
  
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary" name="valider">Submit</button>
 </form>
+  </div>
+
 </body>
 </html>

@@ -15,12 +15,14 @@ if(isset($_GET['id']) AND !empty($_GET['id']) AND isset($_GET['cle']) AND !empty
     if($recupUser->rowCount()>0){
         $userInfo = $recupUser->fetch();
         if($userInfo['confirme'] != 1){
+            //changer confirm à 1
             $updateConfirmation = $bdd->prepare('UPDATE users SET confirme = ? WHERE id = ?');
             $updateConfirmation->execute(array(1, $getid));
             $_SESSION['cle'] = $getcle;
             header('Location: index.php');
         }else{
             $_SESSION['cle'] = $getcle;
+            var_dump('okl');
             header('Location: index.php');
         }
     }else{
